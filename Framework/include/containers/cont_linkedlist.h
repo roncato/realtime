@@ -49,6 +49,7 @@ public:
 	void Enqueue(T elem);
 	bool Dequeue(T& elem);
 	bool Peek(T& elem);
+	void Clear();
 	LinkedList<T>& operator=(const LinkedList<T>& that) {
 		CopyTo(that, *this);
 	}
@@ -113,12 +114,7 @@ public:
 template <class T>
 containers::LinkedList<T>::~LinkedList()
 {
-	containers::SinglyLinkedNode<T>* node = head_.next;
-	while (node) {
-		containers::SinglyLinkedNode<T>* free_node = node;
-		node = node->next;
-		free(free_node);
-	}
+	Clear();
 }
 
 template <class T>
@@ -242,6 +238,18 @@ void containers::LinkedList<T>::CopyTo(const containers::LinkedList<T>& from, co
 		to.Add(from_node->elem);
 		from_node = from_node->next;
 	}
+}
+
+template <class T>
+void containers::LinkedList<T>::Clear() {
+	containers::SinglyLinkedNode<T>* next = head_.next;
+	while (next) {
+		containers::SinglyLinkedNode<T>* free_node = next;
+		next = next->next;
+		free(free_node);
+	}
+	head_.next = nullptr;
+	size_ = 0;
 }
 
 #endif /* CONT_LIST_H_ */

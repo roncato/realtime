@@ -15,9 +15,19 @@ namespace mal {
 namespace schedule {
 
 /*
+* Task handle
+*/
+typedef uint16_t handle_t;
+
+/*
 * Scheduled task handler type
 */
 typedef void (*scheduled_task_handler_t)(void*);
+
+/*
+* Null handle
+*/
+constexpr handle_t kNullHandle = 0U;
 
 /*
 * Initialize PIN CHANGE INTERRUPT
@@ -42,7 +52,12 @@ bool ScheduleTask(void* context, const mal::time::time_t delay, const mal::sched
 /*
 * Schedule recurring task
 */
-bool ScheduleTaskAtFixedRate(void* context, const mal::time::time_t delay, const mal::time::time_t initial_delay, const mal::schedule::scheduled_task_handler_t handler);
+handle_t ScheduleTaskAtFixedRate(void* context, const mal::time::time_t delay, const mal::time::time_t initial_delay, const mal::schedule::scheduled_task_handler_t handler);
+
+/*
+* Dequeue task from schedule. Complexity O(n) use with care. Acquires interrupt lock
+*/
+bool UnscheduleTask(handle_t);
 
 } // namespace schedule
 } // namespace mal

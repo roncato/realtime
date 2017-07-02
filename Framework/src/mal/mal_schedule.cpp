@@ -28,9 +28,12 @@ typedef struct {
 	mal::time::time_t delay;
 	mal::schedule::scheduled_task_handler_t handler;
 	bool recurring;
+	mal::schedule::handle_t handle;
 } ScheduledTask;
 
 volatile bool is_initialized{false};
+
+volatile mal::schedule::handle_t next_handle{};
 
 constexpr mal::time::time_t kMicroSecondsPerTimerTick = CLOCK_CYCLES_TO_MICROSECOND(64);
 constexpr mal::time::time_t kMaxDelayMicros = kMicroSecondsPerTimerTick * 256;
@@ -64,6 +67,9 @@ void ResetTimer() {
 	containers::Entry<mal::time::time_t, ScheduledTask> entry;
 	if (queue.Peek(entry)) {
 		if (entry.value.due_time > now) {
+			// Get the max between current and queue time diff, when tasks are too fast and happen between
+			// a system tick overflow, the overflow interrupt will be posponed until this is done as a result
+			// we may get an inaccurate timestamp
 			auto diff = entry.value.due_time - now;
 			const auto diffq = entry.value.due_time - entry.value.queue_time;
 			diff = diff < diffq ? diff : diffq;
@@ -142,6 +148,9 @@ void mal::schedule::Uninitialize() {
 
 		INTERRUPT_LOCK()
 
+			// Clear queue
+			queue.Clear();
+
 			// disable timer1 compare flag
 			mal::reg::Access<uint8_t, uint8_t, mal::reg::kTimerInterruptMskReg2, 0x01U>::ClearBit();
 
@@ -158,7 +167,7 @@ void mal::schedule::Uninitialize() {
 }
 
 inline bool mal::schedule::IsInitialized() {
-	return IsInitialized();
+	return is_initialized;
 }
 
 bool mal::schedule::ScheduleTask(void* context, 
@@ -166,55 +175,65 @@ bool mal::schedule::ScheduleTask(void* context,
 								const mal::schedule::scheduled_task_handler_t handler,
 								bool is_in_interrupt_handler) {
 							
-	// Asserts
 	if (!is_initialized) {
 		return false;
 	}
 	
-	// Add task to queue
 	if (is_in_interrupt_handler) {
 		const auto queue_time = mal::time::MicrosInt();
 		const auto due_time = queue_time + delay;
-		ScheduledTask task {context, queue_time, due_time, delay, handler, false};
+		ScheduledTask task {context, queue_time, due_time, delay, handler, false, kNullHandle};
 		queue.Add(due_time, task);
 	} else {
 
 		INTERRUPT_LOCK()
 			const auto queue_time = mal::time::Micros();
 			const auto due_time = queue_time + delay;
-			ScheduledTask task {context, queue_time, due_time, delay, handler, false};
+			ScheduledTask task {context, queue_time, due_time, delay, handler, false, kNullHandle};
 			queue.Add(due_time, task);
 			ResetTimer();
 
 		UNLOCK()
 	}
-
 	return true;
 }
 
-bool mal::schedule::ScheduleTaskAtFixedRate(void* context, 
+mal::schedule::handle_t mal::schedule::ScheduleTaskAtFixedRate(void* context, 
 								const mal::time::time_t initial_delay,
 								const mal::time::time_t delay, 
 								const mal::schedule::scheduled_task_handler_t handler) {
 							
-	// Asserts
 	if (!is_initialized) {
-		return false;
+		return mal::schedule::kNullHandle;
 	}
 	
-	// Calculates due_time
 	const auto queue_time = mal::time::Micros();
 	const auto due_time = queue_time + initial_delay;
 
 	INTERRUPT_LOCK()
 
-		// Adds task to queue
-		ScheduledTask task {context, queue_time, due_time, delay, handler, true};
+		++next_handle;
+		ScheduledTask task {context, queue_time, due_time, delay, handler, true, next_handle};
 		queue.Add(due_time, task);
 		ResetTimer();
 
 	UNLOCK()
 
+	return next_handle;
+}
 
-	return true;
+bool mal::schedule::UnscheduleTask(mal::schedule::handle_t handle) {
+	bool changed{};
+	containers::SortedListIterator<mal::time::time_t, ScheduledTask> iterator(&queue);
+	INTERRUPT_LOCK()
+		while (iterator.HasNext()) {
+			if (iterator.Next().value.handle == handle) {
+				iterator.RemoveAdvance();
+				changed = true;
+				break;
+			}
+			iterator.Advance();
+		}
+	UNLOCK()
+	return changed;
 }

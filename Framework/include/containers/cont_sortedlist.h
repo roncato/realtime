@@ -16,6 +16,9 @@
 namespace containers {
 
 template <class K, class V>
+class SortedListIterator;
+
+template <class K, class V>
 class SortedList {
 public:
 	SortedList() {
@@ -29,28 +32,50 @@ public:
 	bool Take(Entry<K, V>& entry);
 	bool Peek(Entry<K, V>& entry);
 	bool Peek(K& entry);
+	void Clear();
 	SortedList<K, V>& operator=(const SortedList<K, V>& that) {
 		CopyTo(that, *this);
 	}
 	bool IsEmpty() const {
 		return size_ <= 0;
 	}
+	friend class SortedListIterator<K, V>;
 private:
 	SinglyLinkedEntryNode<K, V> head_{};
 	uint16_t size_{};
 	void CopyTo(const SortedList<K, V>& from, SortedList<K, V>& to);
+	void Remove(containers::SinglyLinkedEntryNode<K, V>* prev, containers::SinglyLinkedEntryNode<K, V>* node);
+};
+
+template <class K, class V>
+class SortedListIterator {
+	public:
+	SortedListIterator(SortedList<K, V>* list) : list_{list}, prev_{&list->head_}, next_{list->head_.next} { }
+	bool HasNext() {
+		return next_ != nullptr;
+	}
+	containers::Entry<K, V> Next() {
+		return containers::Entry<K, V>{next_->key, next_->value};
+	}
+	void Advance() {
+		next_ = next_->next;
+	}
+	void RemoveAdvance() {
+		SinglyLinkedEntryNode<K, V>* next = next_;
+		list_->Remove(prev_, next);
+		next_ = prev_->next;
+	}
+private:
+	SortedList<K, V>* list_;
+	SinglyLinkedEntryNode<K, V>* prev_;
+	SinglyLinkedEntryNode<K, V>* next_;
 };
 
 } // namespace containers
 
 template <class K, class V>
 containers::SortedList<K, V>::~SortedList() {
-	containers::SinglyLinkedEntryNode<K, V>* node = head_.next;
-	while (node) {
-		containers::SinglyLinkedEntryNode<K, V>* free_node = node;
-		node = node->next;
-		free(free_node);
-	}
+	Clear();
 }
 
 template <class K, class V>
@@ -111,6 +136,26 @@ void containers::SortedList<K, V>::CopyTo(const containers::SortedList<K, V>& fr
 		//to.Add(from_node->elem_);
 		from_node = from_node->next;
 	}
+}
+
+template <class K, class V>
+void containers::SortedList<K, V>::Remove(containers::SinglyLinkedEntryNode<K, V>* prev, containers::SinglyLinkedEntryNode<K, V>* node) {
+	containers::SinglyLinkedEntryNode<K, V>* remove_node = node;
+	prev->next = node->next;
+	free(remove_node);
+	--size_;
+}
+
+template <class K, class V>
+void containers::SortedList<K, V>::Clear() {
+	containers::SinglyLinkedEntryNode<K, V>* next = head_.next;
+	while (next) {
+		containers::SinglyLinkedEntryNode<K, V>* free_node = next;
+		next = next->next;
+		free(free_node);
+	}
+	head_.next = nullptr;
+	size_ = 0;
 }
 
 #endif /* CONT_SORTEDLIST_H_ */
