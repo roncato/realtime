@@ -143,6 +143,7 @@
     <ListValues>
       <Value>%24(PackRepoDir)\atmel\ATmega_DFP\1.2.132\include</Value>
       <Value>../../Framework/include</Value>
+      <Value>../include</Value>
     </ListValues>
   </avrgcccpp.compiler.directories.IncludePaths>
   <avrgcccpp.compiler.optimization.level>Optimize (-O1)</avrgcccpp.compiler.optimization.level>
@@ -172,13 +173,16 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="include\examples.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\example_actuator_pwm.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\example_algorithms.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\example_await.cpp">
+    <Compile Include="src\example_timer.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\example_blink.cpp">
@@ -214,8 +218,12 @@
     <Compile Include="src\example_sortedlist.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\main.cpp">
+      <SubType>compile</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="include" />
     <Folder Include="src" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />

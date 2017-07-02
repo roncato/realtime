@@ -49,8 +49,9 @@ void Task6(void* context) {
 
 }
 
-int main(void)
-{
+namespace example {
+
+void Schedule(void) {
 	mal::irq::EnableAll();
 	mal::time::Initialize();
 	mal::schedule::Initialize();
@@ -75,8 +76,9 @@ int main(void)
 		task1_handle = mal::schedule::kNullHandle;
 	}
 
-	while (1)
-	{
+	while (1) {
 		mal::cpu::NOP();		
 	}
 }
+
+} // namespace example

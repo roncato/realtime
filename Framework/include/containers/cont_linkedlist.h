@@ -52,6 +52,7 @@ public:
 	void Clear();
 	LinkedList<T>& operator=(const LinkedList<T>& that) {
 		CopyTo(that, *this);
+		return *this;
 	}
 	const T& operator[](uint16_t index) const {
 		T value;
