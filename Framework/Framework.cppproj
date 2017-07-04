@@ -179,7 +179,7 @@
     <Compile Include="include\actuators\actuator_servo.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\containers\const_buffer.h">
+    <Compile Include="include\containers\cont_buffer.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\containers\containers.h">

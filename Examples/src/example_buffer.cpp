@@ -7,7 +7,7 @@
 
 #include "mal/mal_cpu.h"
 
-#include "containers/const_buffer.h"
+#include "containers/cont_buffer.h"
 #include "util/util_random.h"
 
 namespace example {
