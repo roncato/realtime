@@ -117,7 +117,7 @@ mal::irq::IrqReturn mal::irq::RegisterIrq(	void* context,
 	// Increment register
 	INTERRUPT_LOCK()
 		group_regs_cnt[offset]++;
-	UNLOCK()
+	INTERRUPT_UNLOCK()
 
 	// Enable interrupt for pin change interrupt group
 	mal::reg::SetBit(mal::reg::KPinChangeCntlReg, offset);
@@ -171,7 +171,7 @@ mal::irq::IrqReturn mal::irq::UnregisterIrq(const pcint_number_t pcint_number, c
 				iterator.Advance();
 			}			
 		}
-	UNLOCK()
+	INTERRUPT_UNLOCK()
 
 	return IRQ_UNREGISTERED;
 }

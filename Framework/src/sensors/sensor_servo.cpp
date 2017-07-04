@@ -46,13 +46,13 @@ uint16_t sensor::ServoSensor::Read() const {
 void sensor::ServoSensor::SetEventHandler(void* context, SensorReadEventHandler handler) {
 	INTERRUPT_LOCK()
 		event_handler_ = SensorEventRecord{context, handler};
-	UNLOCK()
+	INTERRUPT_UNLOCK()
 }
 
 void sensor::ServoSensor::RemoveEventHandler() {
 	INTERRUPT_LOCK()
 		event_handler_ = SensorEventRecord{nullptr, nullptr};
-	UNLOCK()
+	INTERRUPT_UNLOCK()
 }
 
 void sensor::ServoSensor::Rising(void* ptr) {

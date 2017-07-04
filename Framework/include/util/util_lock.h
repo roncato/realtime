@@ -14,7 +14,7 @@
 #include "mal/mal_reg_access.h"
 
 #define INTERRUPT_LOCK() { util::lock::InterruptLock lock;
-#define UNLOCK() }
+#define INTERRUPT_UNLOCK() }
 
 namespace util {
 namespace lock {

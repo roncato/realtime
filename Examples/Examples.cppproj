@@ -185,6 +185,9 @@
     <Compile Include="src\example_buffer.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\example_comm_serial.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\example_timer.cpp">
       <SubType>compile</SubType>
     </Compile>

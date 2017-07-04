@@ -13,6 +13,8 @@
 
 #include <avr/pgmspace.h>
 
+#define F_CPU 16000000UL
+
 namespace mal {
 namespace cpu {
 

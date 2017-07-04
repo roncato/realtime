@@ -136,7 +136,7 @@ void mal::schedule::Initialize() {
 			mal::reg::Access<uint8_t, uint8_t, mal::reg::kTimerControlReg2B, 0x01U>::ClearBit();
 			mal::reg::Access<uint8_t, uint8_t, mal::reg::kTimerControlReg2B, 0x02U>::SetBit();
 
-		UNLOCK()
+		INTERRUPT_UNLOCK()
 
 		is_initialized = true;
 	}
@@ -162,7 +162,7 @@ void mal::schedule::Uninitialize() {
 			mal::reg::Access<uint8_t, uint8_t, mal::reg::kTimerControlReg2B, 0x01U>::ClearBit();
 			mal::reg::Access<uint8_t, uint8_t, mal::reg::kTimerControlReg2B, 0x02U>::ClearBit();
 
-		UNLOCK()
+		INTERRUPT_UNLOCK()
 	}
 }
 
@@ -193,7 +193,7 @@ bool mal::schedule::ScheduleTask(void* context,
 			queue.Add(due_time, task);
 			ResetTimer();
 
-		UNLOCK()
+		INTERRUPT_UNLOCK()
 	}
 	return true;
 }
@@ -217,7 +217,7 @@ mal::schedule::handle_t mal::schedule::ScheduleTaskAtFixedRate(void* context,
 		queue.Add(due_time, task);
 		ResetTimer();
 
-	UNLOCK()
+	INTERRUPT_UNLOCK()
 
 	return next_handle;
 }
@@ -234,6 +234,6 @@ bool mal::schedule::UnscheduleTask(mal::schedule::handle_t handle) {
 			}
 			iterator.Advance();
 		}
-	UNLOCK()
+	INTERRUPT_UNLOCK()
 	return changed;
 }

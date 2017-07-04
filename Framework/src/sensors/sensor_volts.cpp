@@ -9,7 +9,7 @@
 
 namespace {
 
-uint8_t opens{};
+uint8_t instances{};
 
 }
 
@@ -26,13 +26,13 @@ bool sensor::VoltsSensor::Read(float& quantity) {
 sensor::SensorReturn sensor::VoltsSensor::Open() {
 	mal::reg::Access<uint8_t, uint8_t, mal::reg::kADControlStatusReg, mal::reg::kADCEnableBit>::SetBit();
 	mal::reg::SetBit(mal::reg::kDInputDisableReg, adc_pin_);
-	++opens;
+	++instances;
 	is_open = true;
 	return SENSOR_RETURN_OKAY;
 };
 
 sensor::SensorReturn sensor::VoltsSensor::Close() {
-	if (--opens <= 0) {
+	if (--instances <= 0) {
 		mal::reg::Access<uint8_t, uint8_t, mal::reg::kADControlStatusReg, mal::reg::kADCEnableBit>::ClearBit();
 	}
 	mal::reg::ClearBit(mal::reg::kDInputDisableReg, adc_pin_);

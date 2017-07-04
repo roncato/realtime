@@ -85,7 +85,7 @@ void Initialize() {
 			mal::reg::Access<uint8_t, uint8_t, mal::reg::kTimerControlReg1B, 0x01U>::SetBit();
 			mal::reg::Access<uint8_t, uint8_t, mal::reg::kTimerControlReg1B, 0x02U>::ClearBit();
 
-		UNLOCK()
+		INTERRUPT_UNLOCK()
 
 		is_initialized = true;
 	}
@@ -101,7 +101,7 @@ void Uninitialize() {
 			mal::reg::Access<uint8_t, uint8_t, mal::reg::kTimerControlReg1B, 0x01U>::ClearBit();
 			mal::reg::Access<uint8_t, uint8_t, mal::reg::kTimerControlReg1B, 0x02U>::ClearBit();
 
-		UNLOCK()
+		INTERRUPT_UNLOCK()
 
 		is_initialized = false;
 	}
@@ -166,7 +166,7 @@ bool actuator::ServoActuator::Write(uint16_t pulse_width) {
 		uint16_t pulse_ticks = MicrosToTicks(pulse_width_);
 		INTERRUPT_LOCK()
 			servos[servo_number_].pulse_ticks = pulse_ticks;
-		UNLOCK()
+		INTERRUPT_UNLOCK()
 		return true;
 	}
 	return false;
@@ -187,7 +187,7 @@ actuator::ActuatorReturn actuator::ServoActuator::Open() {
 			servos[servo_number_].port_address = port_address_;
 			servos[servo_number_].pin_number = pin_number_;
 			servos[servo_number_].is_open = true;
-		UNLOCK()
+		INTERRUPT_UNLOCK()
 		return ACTUATOR_RETURN_OKAY;
 	}
 	return ACTUATOR_RETURN_NOT_AFFECTED;
@@ -198,7 +198,7 @@ actuator::ActuatorReturn actuator::ServoActuator::Close() {
 		is_open_ = false;
 		INTERRUPT_LOCK()
 			servos[servo_number_].is_open = false;
-		UNLOCK()
+		INTERRUPT_UNLOCK()
 		--open_servos;
 		if (open_servos <= 0) {
 			Uninitialize();	

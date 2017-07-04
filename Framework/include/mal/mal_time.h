@@ -10,8 +10,7 @@
 #define MAL_TIME_H_
 
 #include <stdint.h>
-
-#define F_CPU 16000000UL
+#include "mal/mal_cpu.h"
 
 #define CLOCK_CYCLES_PER_MICROSECOND() (F_CPU / 1000000UL)
 #define CLOCK_CYCLES_TO_MICROSECOND(v) ((v) / CLOCK_CYCLES_PER_MICROSECOND())

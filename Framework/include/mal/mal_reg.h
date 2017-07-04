@@ -115,6 +115,26 @@ constexpr uint8_t kADCIntFlagBit		= 0x04;
 constexpr uint8_t kADCStartBit			= 0x06;
 constexpr uint8_t kADCEnableBit			= 0x07;
 
+// USART
+constexpr uint8_t kUsart0DataReg			= 0xC6;
+constexpr uint8_t kUsart0ControlStatusRegA	= 0xC0;
+constexpr uint8_t kUsart0ControlStatusRegB	= 0xC1;
+constexpr uint8_t kUsart0ControlStatusRegC	= 0xC2;
+constexpr uint8_t kUsart0BaudL				= 0xC4;
+constexpr uint8_t kUsart0BaudH				= 0xC5;
+constexpr uint8_t kUsart0TxEn0Val			= kBitVal3;
+constexpr uint8_t kUsart0RxEn0Val			= kBitVal4;
+constexpr uint8_t kUsart0DataEmptyIntEnVal	= kBitVal5;
+constexpr uint8_t kUsart0TxCompleteIntEnVal	= kBitVal6;	
+constexpr uint8_t kUsart0RxCompleteIntEnVal	= kBitVal7;
+constexpr uint8_t kUsart0TxCompleteBit		= 0x06;
+constexpr uint8_t kUsart0DataEmptyIntEnBit	= 0x05;
+constexpr uint8_t kUsart0ParityStartBit		= 0x04;
+constexpr uint8_t kUsart0DataSizeStartBit	= 0x01;
+constexpr uint8_t kUsart02xBit				= 0x01;
+constexpr uint8_t kUsart0StopbitsStartBit	= 0x03;
+constexpr uint8_t kUsartRxErrorMask			= 0x1C;
+
 } // namespace reg
 } // namespace mal
 

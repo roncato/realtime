@@ -179,6 +179,12 @@
     <Compile Include="include\actuators\actuator_servo.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="include\communication\comm_adapter.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\communication\comm_serial.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="include\containers\cont_buffer.h">
       <SubType>compile</SubType>
     </Compile>
@@ -263,6 +269,9 @@
     <Compile Include="src\actuators\actuator_servo.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\communication\comm_serial.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\mal\mal_pincint.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -294,11 +303,13 @@
     <Folder Include="include\containers" />
     <Folder Include="include\actuators" />
     <Folder Include="include\filters" />
+    <Folder Include="include\communication" />
     <Folder Include="include\util" />
     <Folder Include="include\sensors" />
     <Folder Include="src" />
     <Folder Include="src\mal\" />
     <Folder Include="src\actuators" />
+    <Folder Include="src\communication" />
     <Folder Include="src\sensors" />
     <Folder Include="src\util\" />
   </ItemGroup>

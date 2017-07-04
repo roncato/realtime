@@ -23,6 +23,7 @@ int main(void) {
 	//example::SensorServo();
 	//example::SortedList();
 	//example::Timer();
-	example::Buffer();
+	//example::Buffer();
+	example::Serial();
 	return 0;
 }
