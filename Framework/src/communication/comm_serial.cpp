@@ -77,22 +77,30 @@ void comm::Serial::Close() {
 }
 
 uint8_t comm::Serial::Write(uint8_t data) {
-	if (is_open_ && mal::reg::Access<uint8_t, uint8_t, mal::reg::kUsart0ControlStatusRegA, mal::reg::kUsart0DataEmptyIntEnBit>::GetBit()) {
-		mal::reg::SetVal(mal::reg::kUsart0DataReg, data);
-		return static_cast<uint8_t>(1U);
-	} else {
-		uint8_t written;
-		written = tx_buffer.Write(data);
-		mal::reg::Access<uint8_t, uint8_t, mal::reg::kUsart0ControlStatusRegB, mal::reg::kUsart0DataEmptyIntEnBit>::SetBit();
-		return written;
+	uint8_t written = 0U;
+	if (is_open_) {
+		if (mal::reg::Access<uint8_t, uint8_t, mal::reg::kUsart0ControlStatusRegA, mal::reg::kUsart0DataEmptyIntEnBit>::GetBit()) {
+			mal::reg::SetVal(mal::reg::kUsart0DataReg, data);
+			++written;
+		} else {
+			written = tx_buffer.Write(data);
+			mal::reg::Access<uint8_t, uint8_t, mal::reg::kUsart0ControlStatusRegB, mal::reg::kUsart0DataEmptyIntEnBit>::SetBit();
+		}
 	}
+	return written;
 }
 
 uint8_t comm::Serial::Write(uint8_t* buffer, uint8_t len) {
-	auto written = Write(*buffer);
-	if (len > 1U) {
-		written = tx_buffer.Write(buffer+1U, len-1U);
-		mal::reg::Access<uint8_t, uint8_t, mal::reg::kUsart0ControlStatusRegB, mal::reg::kUsart0DataEmptyIntEnBit>::SetBit();
+	uint8_t written = 0U;
+	if (is_open_) {
+		if (mal::reg::Access<uint8_t, uint8_t, mal::reg::kUsart0ControlStatusRegA, mal::reg::kUsart0DataEmptyIntEnBit>::GetBit()) {
+			mal::reg::SetVal(mal::reg::kUsart0DataReg, *buffer);
+			++written;
+		}
+		if (len > 1U) {
+			written += tx_buffer.Write(buffer+1U, len-1U);
+			mal::reg::Access<uint8_t, uint8_t, mal::reg::kUsart0ControlStatusRegB, mal::reg::kUsart0DataEmptyIntEnBit>::SetBit();
+		}
 	}
 	return written;
 }
