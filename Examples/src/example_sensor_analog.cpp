@@ -21,7 +21,7 @@ void SensorAnalog(void) {
 	constexpr uint8_t adc_pin = 5U;
 	constexpr float volt_ref = 5.0;
 
-	float interp_table[2][2] = {{0.0,0.0},{5.0,1.0}}; // percent
+	float interp_table[2][2] = {{0.0,0.0},{volt_ref,1.0}}; // percent
 
 	sensor::InterpolatedSensor<2U> interpolate_sensor(adc_pin, volt_ref, interp_table);
 	interpolate_sensor.Open();

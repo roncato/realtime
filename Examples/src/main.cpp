@@ -13,6 +13,7 @@ int main(void) {
 	//example::Algorithms();
 	//example::Blink();
 	//example::LinkedList();
+	//example::Vector();
 	//example::MovingAverage();
 	//example::Queue();
 	//example::RingBuffer();
@@ -22,5 +23,6 @@ int main(void) {
 	//example::SensorServo();
 	//example::SortedList();
 	//example::Timer();
+	example::Buffer();
 	return 0;
 }

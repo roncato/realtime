@@ -16,7 +16,10 @@ namespace random {
 
 void Initialize(uint32_t seed);
 
-uint16_t NextUint32();
+uint8_t NextUint8();
+uint16_t NextUint16();
+uint32_t NextUint32();
+float NextFloat();
 
 }
 

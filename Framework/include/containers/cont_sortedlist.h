@@ -33,7 +33,7 @@ public:
 	bool Peek(Entry<K, V>& entry);
 	bool Peek(K& entry);
 	void Clear();
-	SortedList<K, V>& operator=(const SortedList<K, V>& that) {
+	const SortedList<K, V>& operator=(const SortedList<K, V>& that) {
 		CopyTo(that, *this);
 	}
 	bool IsEmpty() const {

@@ -179,6 +179,9 @@
     <Compile Include="include\actuators\actuator_servo.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="include\containers\const_buffer.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="include\containers\containers.h">
       <SubType>compile</SubType>
     </Compile>
@@ -195,6 +198,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\containers\cont_stack.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\containers\cont_vector.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\filters\filter_movingavg.h">

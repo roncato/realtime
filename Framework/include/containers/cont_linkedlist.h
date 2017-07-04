@@ -50,7 +50,7 @@ public:
 	bool Dequeue(T& elem);
 	bool Peek(T& elem);
 	void Clear();
-	LinkedList<T>& operator=(const LinkedList<T>& that) {
+	const LinkedList<T>& operator=(const LinkedList<T>& that) {
 		CopyTo(that, *this);
 		return *this;
 	}

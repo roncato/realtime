@@ -19,9 +19,27 @@ void util::random::Initialize(uint32_t seed) {
 	state = seed;
 }
 
-uint16_t util::random::NextUint32() {
+uint8_t util::random::NextUint8() {
+	state ^= state << 13;
+	state ^= state >> 17;
+	state ^= state << 5;
+	return state % INT8_MAX;
+}
+
+uint16_t util::random::NextUint16() {
+	state ^= state << 13;
+	state ^= state >> 17;
+	state ^= state << 5;
+	return state % INT16_MAX;
+}
+
+uint32_t util::random::NextUint32() {
 	state ^= state << 13;
 	state ^= state >> 17;
 	state ^= state << 5;
 	return state;
+}
+
+float util::random::NextFloat() {
+	return util::random::NextUint32() / INT32_MAX;
 }

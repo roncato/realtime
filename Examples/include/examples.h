@@ -25,6 +25,8 @@ void SensorAnalog(void);
 void SensorServo(void);
 void SortedList(void);
 void Timer(void);
+void Vector(void);
+void Buffer(void);
 
 }
 

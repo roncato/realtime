@@ -182,6 +182,9 @@
     <Compile Include="src\example_algorithms.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\example_buffer.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\example_timer.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -216,6 +219,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\example_sortedlist.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\example_vector.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\main.cpp">

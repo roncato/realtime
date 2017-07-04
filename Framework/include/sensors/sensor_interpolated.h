@@ -36,7 +36,7 @@ public:
 			uint16_t hi = interp_table_size-1;
 			if (util::algorithm::FindRange<float>(x_, volts, lo, hi)) {
 				const auto f = (volts - x_[lo]) / (x_[hi] - x_[lo]);
-				quantity = (1.0-f)*(y_[lo]) + f*y_[hi];
+				quantity = y_[lo] + f * (y_[hi] - y_[lo]);
 				return true;
 			}
 		}		

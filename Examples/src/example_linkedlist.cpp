@@ -29,16 +29,15 @@ void LinkedList(void) {
 	list.Remove();
 	list.Get(0, el0);
 	list.Get(1, el1);
+	list.Add(3);
+	list.Remove(1);
+	list.Get(0, el0);
+	list.Get(1, el1);
 	containers::LinkedList<volatile uint8_t> list2 = list;	
 	containers::LinkedList<volatile uint8_t> list3;
 	list3 = list;
 
-	volatile uint16_t a = 0;
-
 	while(1) {
-		if (a > 0) {
-			++a;
-		}
 		mal::cpu::NOP();
 	}
 }
