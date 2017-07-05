@@ -28,7 +28,7 @@ public:
 		CopyTo(that, *this);
 	}
 	~SortedList();
-	void Add(K key, V value);
+	bool Add(K key, V value);
 	bool Take(Entry<K, V>& entry);
 	bool Peek(Entry<K, V>& entry);
 	bool Peek(K& entry);
@@ -79,7 +79,7 @@ containers::SortedList<K, V>::~SortedList() {
 }
 
 template <class K, class V>
-void containers::SortedList<K, V>::Add(K key, V value) {
+bool containers::SortedList<K, V>::Add(K key, V value) {
 	containers::SinglyLinkedEntryNode<K, V>* prev = &head_;
 	containers::SinglyLinkedEntryNode<K, V>* node = prev->next;
 	while (node && key > node->key) {
@@ -93,7 +93,9 @@ void containers::SortedList<K, V>::Add(K key, V value) {
 		new_node->value = value;
 		prev->next = new_node;
 		++size_;
+		return true;
 	}
+	return false;
 }
 
 template <class K, class V>

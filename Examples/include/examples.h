@@ -28,6 +28,7 @@ void Timer(void);
 void Vector(void);
 void Buffer(void);
 void Serial(void);
+void PriorityQueue(void);
 
 }
 

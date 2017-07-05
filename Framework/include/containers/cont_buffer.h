@@ -34,7 +34,7 @@ public:
 			store_[write_index_++] = data[index++];
 			if (write_index_ >= capacity) {
 				write_index_ = 0;
-			}
+			} 
 			next_index = write_index_ + 1U;
 		}
 		return index;
@@ -73,8 +73,8 @@ public:
 		return read_index_ > write_index_ ? write_index_ + capacity - read_index_ : write_index_ - read_index_;
 	}
 private:
-	uint8_t write_index_{};
-	uint8_t read_index_{};
+	volatile uint8_t write_index_{};
+	volatile uint8_t read_index_{};
 	T store_[capacity];
 };
 

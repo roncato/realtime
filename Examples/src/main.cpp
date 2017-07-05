@@ -24,6 +24,7 @@ int main(void) {
 	//example::SortedList();
 	//example::Timer();
 	//example::Buffer();
-	example::Serial();
+	//example::Serial();
+	example::PriorityQueue();
 	return 0;
 }
