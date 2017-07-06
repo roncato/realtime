@@ -34,7 +34,7 @@ uint8_t GetFurthest(const float avg, const T& v1, const T& v2) {
 }
 
 template <typename T>
-void Merge(T* array, T* aux, uint16_t lo, uint16_t mid, uint16_t hi) {
+void Merge(T* array, T* aux, uint16_t lo, uint16_t mid, uint16_t hi, bool (*less)(T,T)) {
 	for (uint16_t k = lo; k <= hi; ++k) {
 		aux[k] = array[k];
 	}
@@ -45,7 +45,7 @@ void Merge(T* array, T* aux, uint16_t lo, uint16_t mid, uint16_t hi) {
 			array[k] = aux[j++];
 		} else if (j > hi) {
 			array[k] = aux[i++];
-		} else if (aux[i] < aux[j]) {
+		} else if (less(aux[i], aux[j])) {
 			array[k] = aux[i++];
 		} else {
 			array[k] = aux[j++];
@@ -54,16 +54,16 @@ void Merge(T* array, T* aux, uint16_t lo, uint16_t mid, uint16_t hi) {
 }
 
 template <typename T>
-uint16_t Partition(T* array, uint16_t lo, uint16_t hi) {
+uint16_t Partition(T* array, uint16_t lo, uint16_t hi, bool (*less)(T,T) = [](T l, T r){return l < r;}) {
 	auto pivot = array[lo];
 	auto i = lo, j = hi + 1;
 	while (1) {
-		while (pivot > array[++i]) {
+		while (less(array[++i], pivot)) {
 			if (i >= hi) {
 				break;
 			}
 		}
-		while (pivot < array[--j]) {
+		while (less(pivot, array[--j])) {
 			if (j <= lo) {
 				break;
 			}
@@ -75,7 +75,22 @@ uint16_t Partition(T* array, uint16_t lo, uint16_t hi) {
 	}
 	util::utilities::Swap(array[lo], array[j]);
 	return j;
-} 
+}
+
+template <typename T>
+inline void sink(T* array, uint16_t k, uint16_t n, bool (*less)(T,T)) {
+	while (2*k <= n) {
+		auto j = 2*k;
+		if (j < n && less(array[j], array[j+1])) {
+			++j;
+		}
+		if (!less(array[k], array[j])) {
+			break;
+		}
+		util::utilities::Swap(array[k], array[j]);
+		k = j;
+	}
+}
 
 }
 
@@ -85,7 +100,7 @@ namespace algorithm {
 constexpr uint16_t kSortingThreshold = 15U;
 
 template <typename T>
-void Sort(T* array, uint16_t lo, uint16_t hi) {
+void Sort(T* array, uint16_t lo, uint16_t hi, bool (*less)(T,T) = [](T l, T r){return l < r;}) {
 	auto size = hi - lo + 1;
 	uint16_t h = static_cast<uint16_t>(1U);
 	while (h < size/3U) {
@@ -93,7 +108,7 @@ void Sort(T* array, uint16_t lo, uint16_t hi) {
 	}
 	while (h >= 1) {
 		for (auto i = lo + h; i < size; ++i) {
-			for (auto j = i; j >= lo + h && array[j] < array[j-h]; j -= h) {
+			for (auto j = i; j >= lo + h && less(array[j], array[j-h]); j -= h) {
 				util::utilities::Swap(array[j], array[j-h]);
 			}
 		}
@@ -102,24 +117,24 @@ void Sort(T* array, uint16_t lo, uint16_t hi) {
 }
 
 template <typename T>
-void MergeSort(T* array, T* aux, uint16_t lo, uint16_t hi) {
+void MergeSort(T* array, T* aux, uint16_t lo, uint16_t hi, bool (*less)(T,T) = [](T l, T r){return l < r;}) {
 	for (uint16_t sz = 1U; sz <= hi; sz += sz+sz) {
 		for (uint16_t lk = 0; lk <= hi - sz; lk += sz+sz) {
 			auto const mid = lk + sz - 1;
 			auto const hk = util::utilities::Min(lk + sz + sz, hi);
-			Merge(array, aux, lk, mid, hk);
+			Merge(array, aux, lk, mid, hk, less);
 		}
 	}
 }
 
 template <typename T>
-void QuickSort(T* array, uint16_t lo, uint16_t hi) {
+void QuickSort(T* array, uint16_t lo, uint16_t hi, bool (*less)(T,T) = [](T l, T r){return l < r;}) {
 	containers::Stack<Boundaries> stack;
 	stack.Push(Boundaries{lo, hi});
 	Boundaries b;
 	while (!stack.IsEmpty()) {
 		if (stack.Pop(b) && b.lo < b.hi) {
-			const auto j = Partition(array, b.lo, b.hi);
+			const auto j = Partition(array, b.lo, b.hi, less);
 			stack.Push(Boundaries{b.lo, j});
 			stack.Push(Boundaries{j+1, b.hi});
 		}
@@ -127,11 +142,22 @@ void QuickSort(T* array, uint16_t lo, uint16_t hi) {
 }
 
 template <typename T>
-void InsertionSort(T* array, uint16_t lo, uint16_t hi) {
+void InsertionSort(T* array, uint16_t lo, uint16_t hi, bool (*less)(T,T) = [](T l, T r){return l < r;}) {
 	for (auto i = lo + 1U; i <= hi; ++i) {
-		for (auto j = i; j > 0 && array[j] < array[j-1]; --j) {
+		for (auto j = i; j > 0 && less(array[j], array[j-1]); --j) {
 			util::utilities::Swap(array[j], array[j-1]);
 		}
+	}
+}
+
+template <typename T>
+void HeapSort(T* array, uint16_t n, bool (*less)(T,T) = [](T l, T r){return l < r;}) {
+	for (auto k = n/2; k >= 1; --k) {
+		sink(array, k-1, n-1, less);
+	}
+	while (n > 1) {
+		util::utilities::Swap(array[0], array[--n]);
+		sink(array, 0, n-1, less);
 	}
 }
 

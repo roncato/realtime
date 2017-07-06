@@ -29,6 +29,19 @@ void PriorityQueue(void) {
 		entries.Add(entry);
 	}
 
+	pq.Add(10, 100);
+	pq.Add(11, 111);
+	pq.Add(18, 150);
+	entries.Clear();
+	containers::PriorityQueue<uint16_t, uint16_t>::PriorityQueueIterator iterator(&pq);
+	while (iterator.HasNext()) {
+		if (iterator.Current().key == 11) {
+			iterator.RemoveAdvance();
+		} else {
+			iterator.Advance();
+		}		
+	}
+
 	while (1) {
 		mal::cpu::NOP();
 	}

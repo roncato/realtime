@@ -227,7 +227,7 @@ bool mal::schedule::UnscheduleTask(mal::schedule::handle_t handle) {
 	containers::SortedListIterator<mal::time::time_t, ScheduledTask> iterator(&queue);
 	INTERRUPT_LOCK()
 		while (iterator.HasNext()) {
-			if (iterator.Next().value.handle == handle) {
+			if (iterator.Current().value.handle == handle) {
 				iterator.RemoveAdvance();
 				changed = true;
 				break;

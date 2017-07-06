@@ -54,7 +54,7 @@ class SortedListIterator {
 	bool HasNext() {
 		return next_ != nullptr;
 	}
-	containers::Entry<K, V> Next() {
+	containers::Entry<K, V> Current() {
 		return containers::Entry<K, V>{next_->key, next_->value};
 	}
 	void Advance() {

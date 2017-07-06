@@ -12,7 +12,7 @@
 #include "util/util_random.h"
 #include "util/util_algorithm.h"
 
-volatile mal::time::time_t diff;
+//volatile mal::time::time_t diff;
 
 namespace example {
 
@@ -32,8 +32,17 @@ void Algorithms(void) {
 	}
 	auto start = mal::time::Micros();
 	util::algorithm::Sort(array, lo, hi);
+	auto diff = mal::time::Micros() - start;
+	auto sorted = util::algorithm::IsSorted(array, size);
+
+	// heap sort
+	for (uint16_t i = 0; i < size; ++i) {
+		array[i] = util::random::NextUint32();
+	}
+	start = mal::time::Micros();
+	util::algorithm::HeapSort(array, size);
 	diff = mal::time::Micros() - start;
-	util::algorithm::IsSorted(array, size);
+	sorted = util::algorithm::IsSorted(array, size);
 
 	lo = 0;
 	hi = size-1;

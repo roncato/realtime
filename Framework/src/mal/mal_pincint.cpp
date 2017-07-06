@@ -163,9 +163,9 @@ mal::irq::IrqReturn mal::irq::UnregisterIrq(const pcint_number_t pcint_number, c
 	INTERRUPT_LOCK()
 		containers::LinkedListIterator<IrqRecord> iterator(list);
 		while (iterator.HasNext()) {
-			if (iterator.Next().pin_address == pin_address &&
-				iterator.Next().bit_number == bit_number &&
-				iterator.Next().trigger == trigger) {
+			if (iterator.Current().pin_address == pin_address &&
+				iterator.Current().bit_number == bit_number &&
+				iterator.Current().trigger == trigger) {
 				iterator.RemoveAdvance();
 			} else {
 				iterator.Advance();

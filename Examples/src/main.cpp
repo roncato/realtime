@@ -10,7 +10,7 @@
 int main(void) {
 	//example::ActuatorPwm();
 	//example::ActuatorServo();
-	//example::Algorithms();
+	example::Algorithms();
 	//example::Blink();
 	//example::LinkedList();
 	//example::Vector();
@@ -25,6 +25,6 @@ int main(void) {
 	//example::Timer();
 	//example::Buffer();
 	//example::Serial();
-	example::PriorityQueue();
+	//example::PriorityQueue();
 	return 0;
 }

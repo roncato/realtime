@@ -57,6 +57,33 @@ public:
 	bool IsEmpty() const {
 		return n_ == 0;
 	}
+	class PriorityQueueIterator {
+	public:
+		PriorityQueueIterator(PriorityQueue* queue) : queue_{queue} {}
+		bool HasNext() {
+			return k <= queue_->n_;
+		}
+		Entry<K, V> Current() {
+			return queue_->heap_[k];
+		}
+		void RemoveAdvance() {
+			util::utilities::Swap(queue_->heap_[k], queue_->heap_[queue_->n_--]);
+			if (queue_->less_(queue_->heap_[k/2].key, queue_->heap_[k].key)) {
+				queue_->swim(k);
+			} else {
+				queue_->sink(k);
+			}
+		}
+		void Advance() {
+			++k;
+		}
+		void Rewind() {
+			k = 1;
+		}
+	private:
+		PriorityQueue* queue_;
+		uint8_t k{1};
+	};
 private:
 	uint8_t n_{};
 	Entry<K, V> heap_[capacity];

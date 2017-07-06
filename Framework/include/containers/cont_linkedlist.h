@@ -76,7 +76,7 @@ public:
 	bool HasNext() {
 		return next_ != nullptr;
 	}
-	T& Next() {
+	T Current() {
 		return next_->elem;
 	}
 	void Advance() {
