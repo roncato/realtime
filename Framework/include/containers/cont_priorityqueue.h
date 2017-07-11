@@ -76,7 +76,7 @@ public:
 				}
 			}
 			// supports only one delete
-			k = queue->n_;
+			k = queue->n_ + 1;
 		}
 		void Advance() {
 			++k;
