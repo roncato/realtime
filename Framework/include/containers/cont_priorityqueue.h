@@ -66,13 +66,17 @@ public:
 		Entry<K, V> Current() {
 			return queue_->heap_[k];
 		}
-		void RemoveAdvance() {
+		void Remove() {
 			util::utilities::Swap(queue_->heap_[k], queue_->heap_[queue_->n_--]);
-			if (queue_->less_(queue_->heap_[k/2].key, queue_->heap_[k].key)) {
-				queue_->swim(k);
-			} else {
-				queue_->sink(k);
+			if (k > 1) {
+				if (queue_->less_(queue_->heap_[k/2].key, queue_->heap_[k].key)) {
+					queue_->swim(k);
+				} else {
+					queue_->sink(k);
+				}
 			}
+			// supports only one delete
+			k = queue->n_ + 1;
 		}
 		void Advance() {
 			++k;
