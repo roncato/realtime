@@ -34,7 +34,7 @@ uint8_t GetFurthest(const float avg, const T& v1, const T& v2) {
 }
 
 template <typename T>
-void Merge(T* array, T* aux, uint16_t lo, uint16_t mid, uint16_t hi, bool (*less)(T,T)) {
+void Merge(T* array, T* aux, uint16_t lo, uint16_t mid, uint16_t hi, bool (*less)(const T&, const T&)) {
 	for (uint16_t k = lo; k <= hi; ++k) {
 		aux[k] = array[k];
 	}
@@ -54,7 +54,7 @@ void Merge(T* array, T* aux, uint16_t lo, uint16_t mid, uint16_t hi, bool (*less
 }
 
 template <typename T>
-uint16_t Partition(T* array, uint16_t lo, uint16_t hi, bool (*less)(T,T) = [](T l, T r){return l < r;}) {
+uint16_t Partition(T* array, uint16_t lo, uint16_t hi, bool (*less)(const T&, const T&) = [](const T& l, const T& r){return l < r;}) {
 	auto pivot = array[lo];
 	auto i = lo, j = hi + 1;
 	while (1) {
@@ -78,7 +78,7 @@ uint16_t Partition(T* array, uint16_t lo, uint16_t hi, bool (*less)(T,T) = [](T 
 }
 
 template <typename T>
-inline void sink(T* array, uint16_t k, uint16_t n, bool (*less)(T,T)) {
+inline void sink(T* array, uint16_t k, uint16_t n, bool (*less)(const T&, const T&)) {
 	while (2*k <= n) {
 		auto j = 2*k;
 		if (j < n && less(array[j], array[j+1])) {
@@ -100,7 +100,7 @@ namespace algorithm {
 constexpr uint16_t kSortingThreshold = 15U;
 
 template <typename T>
-void Sort(T* array, uint16_t lo, uint16_t hi, bool (*less)(T,T) = [](T l, T r){return l < r;}) {
+void Sort(T* array, uint16_t lo, uint16_t hi, bool (*less)(const T&, const T&) = [](const T& l, const T& r){return l < r;}) {
 	auto size = hi - lo + 1;
 	uint16_t h = static_cast<uint16_t>(1U);
 	while (h < size/3U) {
@@ -117,7 +117,7 @@ void Sort(T* array, uint16_t lo, uint16_t hi, bool (*less)(T,T) = [](T l, T r){r
 }
 
 template <typename T>
-void MergeSort(T* array, T* aux, uint16_t lo, uint16_t hi, bool (*less)(T,T) = [](T l, T r){return l < r;}) {
+void MergeSort(T* array, T* aux, uint16_t lo, uint16_t hi, bool (*less)(const T&, const T&) = [](const T& l, const T& r){return l < r;}) {
 	for (uint16_t sz = 1U; sz <= hi; sz += sz+sz) {
 		for (uint16_t lk = 0; lk <= hi - sz; lk += sz+sz) {
 			auto const mid = lk + sz - 1;
@@ -128,7 +128,7 @@ void MergeSort(T* array, T* aux, uint16_t lo, uint16_t hi, bool (*less)(T,T) = [
 }
 
 template <typename T>
-void QuickSort(T* array, uint16_t lo, uint16_t hi, bool (*less)(T,T) = [](T l, T r){return l < r;}) {
+void QuickSort(T* array, uint16_t lo, uint16_t hi, bool (*less)(const T&, const T&) = [](const T& l, const T& r){return l < r;}) {
 	containers::Stack<Boundaries> stack;
 	stack.Push(Boundaries{lo, hi});
 	Boundaries b;
@@ -142,7 +142,7 @@ void QuickSort(T* array, uint16_t lo, uint16_t hi, bool (*less)(T,T) = [](T l, T
 }
 
 template <typename T>
-void InsertionSort(T* array, uint16_t lo, uint16_t hi, bool (*less)(T,T) = [](T l, T r){return l < r;}) {
+void InsertionSort(T* array, uint16_t lo, uint16_t hi, bool (*less)(const T&, const T&) = [](const T& l, const T& r){return l < r;}) {
 	for (auto i = lo + 1U; i <= hi; ++i) {
 		for (auto j = i; j > 0 && less(array[j], array[j-1]); --j) {
 			util::utilities::Swap(array[j], array[j-1]);
@@ -151,7 +151,7 @@ void InsertionSort(T* array, uint16_t lo, uint16_t hi, bool (*less)(T,T) = [](T 
 }
 
 template <typename T>
-void HeapSort(T* array, uint16_t n, bool (*less)(T,T) = [](T l, T r){return l < r;}) {
+void HeapSort(T* array, uint16_t n, bool (*less)(const T&, const T&) = [](const T& l, const T& r){return l < r;}) {
 	for (auto k = n/2; k >= 1; --k) {
 		sink(array, k-1, n-1, less);
 	}

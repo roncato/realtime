@@ -35,8 +35,8 @@ public:
 		CopyTo(that, *this);
 	}
 	~LinkedList();
-	void Add(T elem);
-	void Add(uint16_t index, T elem);
+	void Add(const T& elem);
+	void Add(uint16_t index, const T& elem);
 	void Remove();
 	void Remove(uint16_t index);
 	bool Get(uint16_t index, T& elem);
@@ -119,7 +119,7 @@ containers::LinkedList<T>::~LinkedList()
 }
 
 template <class T>
-void containers::LinkedList<T>::Add(T elem) {
+void containers::LinkedList<T>::Add(const T& elem) {
 	containers::SinglyLinkedNode<T>* new_node = reinterpret_cast<containers::SinglyLinkedNode<T>*>(malloc(sizeof(containers::SinglyLinkedNode<T>)));
 	if (new_node) {
 		new_node->next = nullptr;
@@ -131,7 +131,7 @@ void containers::LinkedList<T>::Add(T elem) {
 }
 
 template <class T>
-void containers::LinkedList<T>::Add(uint16_t index, T elem) {
+void containers::LinkedList<T>::Add(uint16_t index, const T& elem) {
 	if (index >= 0 && index < size_) {
 		containers::SinglyLinkedNode<T>* prev = &head_;
 		containers::SinglyLinkedNode<T>* node = prev->next;

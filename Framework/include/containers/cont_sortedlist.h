@@ -28,10 +28,10 @@ public:
 		CopyTo(that, *this);
 	}
 	~SortedList();
-	bool Add(K key, V value);
+	bool Add(const K& key, const V& value);
 	bool Take(Entry<K, V>& entry);
 	bool Peek(Entry<K, V>& entry);
-	bool Peek(K& entry);
+	bool Peek(K& key);
 	void Clear();
 	const SortedList<K, V>& operator=(const SortedList<K, V>& that) {
 		CopyTo(that, *this);
@@ -79,7 +79,7 @@ containers::SortedList<K, V>::~SortedList() {
 }
 
 template <class K, class V>
-bool containers::SortedList<K, V>::Add(K key, V value) {
+bool containers::SortedList<K, V>::Add(const K& key, const V& value) {
 	containers::SinglyLinkedEntryNode<K, V>* prev = &head_;
 	containers::SinglyLinkedEntryNode<K, V>* node = prev->next;
 	while (node && key > node->key) {
@@ -135,7 +135,7 @@ template <class K, class V>
 void containers::SortedList<K, V>::CopyTo(const containers::SortedList<K, V>& from, containers::SortedList<K, V>& to) {
 	containers::SinglyLinkedEntryNode<K, V>* from_node = from.head_.next;
 	while (from_node) {
-		//to.Add(from_node->elem_);
+		to.Add(from_node->elem_);
 		from_node = from_node->next;
 	}
 }

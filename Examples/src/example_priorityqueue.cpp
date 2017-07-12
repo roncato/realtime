@@ -13,7 +13,7 @@
 namespace example {
 
 void PriorityQueue(void) {	
-	containers::PriorityQueue<uint16_t, uint16_t> pq([](uint16_t l, uint16_t r) {return r < l;});
+	containers::PriorityQueue<uint16_t, uint16_t> pq([](const uint16_t& l, const uint16_t& r) {return r < l;});
 	containers::Vector<containers::Entry<uint16_t, uint16_t>> entries;
 
 	pq.Add(10, 100);

@@ -5,7 +5,6 @@
  *  Author: roncato
  */ 
 
-
 #ifndef VECTOR_H_
 #define VECTOR_H_
 
@@ -27,8 +26,8 @@ public:
 		CopyTo(that, *this);
 	}
 	~Vector();
-	void Add(T elem);
-	void Add(uint16_t index, T elem);
+	void Add(const T& elem);
+	void Add(uint16_t index, const T& elem);
 	void Remove();
 	void Remove(uint16_t index);
 	bool Get(uint16_t index, T& elem);
@@ -78,19 +77,22 @@ bool containers::Vector<T>::EnsureCapacity() {
 }
 
 template <class T>
-void containers::Vector<T>::Add(T elem) {
+void containers::Vector<T>::Add(const T& elem) {
 	if (EnsureCapacity()) {
 		store_[size_++] = elem;	
 	}
 }
 
 template <class T>
-void containers::Vector<T>::Add(uint16_t index, T elem) {
-	if (EnsureCapacity()) {
-		for (auto i = size_ - 1; i > index; --i) {
-			store_[i+1] = store_[i];
+void containers::Vector<T>::Add(uint16_t index, const T& elem) {
+	if (index < size_ && EnsureCapacity()) {
+		if (size_ > 0) {
+			for (auto i = size_; i > index; --i) {
+				store_[i] = store_[i-1];
+			}
 		}
-		store_[size_++] = elem;
+		store_[index] = elem;
+		size_++;		
 	}
 }
 

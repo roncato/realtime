@@ -16,7 +16,7 @@ namespace containers {
 template <typename T, uint16_t capacity>
 class RingBuffer {
 public:
-	void Place(T value) {
+	void Place(const T& value) {
 		if (position_ >= capacity) {
 			position_ = 0;
 		}
@@ -25,7 +25,7 @@ public:
 			++size_;
 		}
 	}
-	void Replace(uint16_t position, T value) {
+	void Replace(uint16_t position, const T& value) {
 		position = position % capacity;
 		if (position >= size_) {
 			return;

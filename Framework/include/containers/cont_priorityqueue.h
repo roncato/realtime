@@ -18,9 +18,9 @@ namespace containers {
 template <class K, class V, uint8_t capacity = 64U>
 class PriorityQueue {
 public:
-	PriorityQueue(bool (*less)(K, K)) : less_{less} {}
-	PriorityQueue() : PriorityQueue([](K left, K right) {return left < right;}) {}
-	bool Add(K key, V value) {
+	PriorityQueue(bool (*less)(const K&, const K&)) : less_{less} {}
+	PriorityQueue() : PriorityQueue([](const K& left, const K& right) {return left < right;}) {}
+	bool Add(const K& key, const V& value) {
 		if (n_ < capacity) {
 			heap_[++n_] = Entry<K, V>{key, value};
 			swim(n_);
@@ -87,7 +87,7 @@ public:
 private:
 	uint8_t n_{};
 	Entry<K, V> heap_[capacity];
-	bool (*less_)(K, K);
+	bool (*less_)(const K&, const K&);
 	void swim(uint8_t k) {
 		while (k > 1 && less_(heap_[k/2].key, heap_[k].key)) {
 			util::utilities::Swap(heap_[k/2], heap_[k]);

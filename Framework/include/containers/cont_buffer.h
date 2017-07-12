@@ -16,7 +16,7 @@ namespace containers {
 template <class T, uint8_t capacity>
 class Buffer {
 public:
-	uint8_t Write(T data) {
+	uint8_t Write(const T& data) {
 		const auto next_index = (write_index_ + 1U) % capacity;
 		if (next_index != read_index_) {
 			store_[write_index_++] = data;

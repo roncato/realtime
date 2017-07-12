@@ -18,7 +18,7 @@ namespace containers {
 template <class T>
 class Stack {
 public:
-	void Push(T elem) {
+	void Push(const T& elem) {
 		if (!first_) {
 			first_ = reinterpret_cast<SinglyLinkedNode<T>*>(malloc(sizeof(SinglyLinkedNode<T>)));
 			first_->elem = elem;

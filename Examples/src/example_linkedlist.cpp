@@ -14,13 +14,13 @@
 namespace example {
 
 void LinkedList(void) {
-	containers::LinkedList<volatile uint8_t> list;
+	containers::LinkedList<uint8_t> list;
 	list.Add(1);
 	list.Add(2);
 	list.Add(3);
-	volatile uint8_t el0;
-	volatile uint8_t el1;
-	volatile uint8_t el2;
+	uint8_t el0;
+	uint8_t el1;
+	uint8_t el2;
 
 	list.Get(0, el0);
 	list.Get(1, el1);
@@ -33,8 +33,8 @@ void LinkedList(void) {
 	list.Remove(1);
 	list.Get(0, el0);
 	list.Get(1, el1);
-	containers::LinkedList<volatile uint8_t> list2 = list;	
-	containers::LinkedList<volatile uint8_t> list3;
+	containers::LinkedList<uint8_t> list2 = list;	
+	containers::LinkedList<uint8_t> list3;
 	list3 = list;
 
 	while(1) {

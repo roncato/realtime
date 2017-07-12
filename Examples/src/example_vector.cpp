@@ -12,13 +12,13 @@
 namespace example {
 
 void Vector(void) {
-	containers::Vector<volatile uint8_t> vector;
-	vector.Add(1);
+	containers::Vector<uint8_t> vector;
+	vector.Add(0, 1);
 	vector.Add(2);
 	vector.Add(3);
-	volatile uint8_t el0;
-	volatile uint8_t el1;
-	volatile uint8_t el2;
+	uint8_t el0;
+	uint8_t el1;
+	uint8_t el2;
 
 	vector.Get(0, el0);
 	vector.Get(1, el1);
@@ -31,8 +31,8 @@ void Vector(void) {
 	vector.Remove(1);
 	vector.Get(0, el0);
 	vector.Get(1, el1);
-	containers::Vector<volatile uint8_t> vector2 = vector;
-	containers::Vector<volatile uint8_t> vector3;
+	containers::Vector<uint8_t> vector2 = vector;
+	containers::Vector<uint8_t> vector3;
 	vector3 = vector;
 
 	while (1) {

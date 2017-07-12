@@ -14,7 +14,7 @@ namespace containers {
 template <class T>
 class Queue {
 public:
-	virtual void Enqueue(T elem) = 0;
+	virtual void Enqueue(const T& elem) = 0;
 	virtual bool Dequeue(T& elem) = 0;
 	virtual bool IsEmpty() const = 0;
 	virtual void Clear() = 0;
