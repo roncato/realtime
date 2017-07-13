@@ -29,7 +29,7 @@ void SortedVector(void) {
 		containers::Entry<uint16_t, uint16_t> entry{};
 		map.Min(entry);
 		entries.Add(entry);
-		map.RemoveMin();
+		map.RemoveMin(entry);
 	}
 
 	while (1) {

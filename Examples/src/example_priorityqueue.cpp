@@ -36,7 +36,7 @@ void PriorityQueue(void) {
 	containers::PriorityQueue<uint16_t, uint16_t>::PriorityQueueIterator iterator(&pq);
 	while (iterator.HasNext()) {
 		if (iterator.Current().key == 11) {
-			iterator.RemoveAdvance();
+			iterator.Remove();
 		} else {
 			iterator.Advance();
 		}		

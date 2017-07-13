@@ -63,11 +63,18 @@ public:
 		}
 		return false;
 	}
-	bool RemoveMin() {
+	bool RemoveMin(Entry<K, V>& entry) {
+		if (size_ > 0) {
+			entry = Entry<K, V> {store_[0].key, store_[0].value};
+		}
 		return RemoveAt(0);
 	}
-	bool RemoveMax() {
-		return RemoveAt(size_-1);
+	bool RemoveMax(Entry<K, V>& entry) {
+		const auto hi = size_-1;
+		if (size_ > 0) {
+			entry = Entry<K, V> {store_[hi].key, store_[hi].value};
+		}
+		return RemoveAt(hi);
 	}
 	void CopyTo(const SortedVector<K, V>& from, SortedVector<K, V>& to);
 	const SortedVector<K, V>& operator=(SortedVector<K, V>& that) {

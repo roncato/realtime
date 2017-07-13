@@ -30,6 +30,15 @@ struct SinglyLinkedEntryNode {
 	SinglyLinkedEntryNode<K, V>* next;
 };
 
+
+template <class K, class V>
+struct BinaryTreeNode {
+	K key;
+	V value;
+	BinaryTreeNode<K, V>* left{nullptr};
+	BinaryTreeNode<K, V>* right{nullptr};
+};
+
 } // namespace containers
 
 #endif /* CONTAINERS_H_ */

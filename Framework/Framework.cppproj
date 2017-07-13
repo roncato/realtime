@@ -184,7 +184,10 @@
     <Compile Include="include\communication\comm_serial.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\containers\const_set.h">
+    <Compile Include="include\containers\cont_bst.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\containers\cont_set.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\containers\cont_buffer.h">

@@ -26,6 +26,7 @@ int main(void) {
 	//example::Buffer();
 	//example::Serial();
 	//example::PriorityQueue();
-	example::SortedVector();
+	//example::SortedVector();
+	example::Bst();
 	return 0;
 }
