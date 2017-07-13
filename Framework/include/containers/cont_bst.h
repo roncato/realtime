@@ -50,7 +50,8 @@ public:
 	bool Max(Entry<K, V>& entry);
 	bool RemoveMin(Entry<K, V>& entry);
 	bool RemoveMax(Entry<K, V>& entry);
-	bool Traverse(LinkedList<Entry<K, V>>& entries); 
+	bool Traverse(LinkedList<Entry<K, V>>& entries);
+	bool TraverseRecursive(containers::LinkedList<containers::Entry<K, V>>& entries);
 private:
 	uint16_t size_{};
 	BinaryTreeNode<K, V>* root_{nullptr};
@@ -58,6 +59,9 @@ private:
 	BinaryTreeNode<K, V>* RemoveMin(BinaryTreeNode<K, V>* root);
 	bool Min(containers::BinaryTreeNode<K, V>* root, containers::BinaryTreeNode<K, V>** min);
 	bool Traverse(LinkedList<BinaryTreeNode<K, V>*>& nodes);
+	void TraverseRecursive(containers::BinaryTreeNode<K, V>* root, LinkedList<BinaryTreeNode<K, V>*>& nodes);
+	bool Floor(BinaryTreeNode<K, V>* root, const K& key, Entry<K, V>& entry);
+	bool Ceiling(BinaryTreeNode<K, V>* root, const K& key, Entry<K, V>& entry);
 };
 
 template <class K, class V>
@@ -239,8 +243,12 @@ containers::BinaryTreeNode<K, V>* containers::Bst<K, V>::RemoveMin(containers::B
 	if (!root->left) {
 		return root->right;
 	} else {
-		root->left = RemoveMin(root->left);
-		return root;
+		containers::BinaryTreeNode<K, V>* h = root;
+		while (root->left->left) {
+			root = root->left;
+		}
+		root->left = root->left->right;
+		return h;
 	}
 }
 
@@ -303,6 +311,32 @@ bool containers::Bst<K, V>::Remove(const K& key) {
 }
 
 template <class K, class V>
+void containers::Bst<K, V>::TraverseRecursive(containers::BinaryTreeNode<K, V>* root, LinkedList<BinaryTreeNode<K, V>*>& nodes) {
+	if (root->left) {
+		TraverseRecursive(root->left, nodes);
+	}
+	nodes.Add(root);
+	if (root->right) {
+		TraverseRecursive(root->right, nodes);
+	}
+}
+
+template <class K, class V>
+bool containers::Bst<K, V>::TraverseRecursive(containers::LinkedList<containers::Entry<K, V>>& entries) {
+	if (size_ > 0) {
+		containers::LinkedList<containers::BinaryTreeNode<K, V>*> list;
+		TraverseRecursive(root_, list);
+		containers::BinaryTreeNode<K, V>* node;
+		while (!list.IsEmpty() && list.Dequeue(node)) {
+			entries.Add(containers::Entry<K, V>{node->key, node->value});
+		}
+		return entries.Size() == size_;
+	}
+	
+	return false;
+}
+
+template <class K, class V>
 bool containers::Bst<K, V>::Traverse(containers::LinkedList<containers::BinaryTreeNode<K, V>*>& nodes) {
 	if (!root_) {
 		return false;
@@ -342,6 +376,52 @@ bool containers::Bst<K, V>::Traverse(containers::LinkedList<containers::Entry<K,
 			entries.Add(containers::Entry<K, V>{node->key, node->value});
 		}
 		return entries.Size() == size_;
+	}
+	return false;
+}
+
+template <class K, class V>
+bool containers::Bst<K, V>::Floor(const K& key, Entry<K, V>& entry) {
+	return Floor(root_, key, entry);
+}
+
+template <class K, class V>
+bool containers::Bst<K, V>::Floor(containers::BinaryTreeNode<K, V>* root, const K& key, Entry<K, V>& entry) {
+	while (root) {
+		if (key < root->key) {
+			root = root->left;
+		} else if (key > root->key) {
+			if (!Floor(root->right, key, entry)) {
+				entry = Entry<K, V>{root->key, root->value};
+			}
+			return true;
+		} else {
+			entry = Entry<K, V>{root->key, root->value};
+			return true;
+		}
+	}
+	return false;
+}
+
+template <class K, class V>
+bool containers::Bst<K, V>::Ceiling(const K& key, Entry<K, V>& entry) {
+	return Ceiling(root_, key, entry);
+}
+
+template <class K, class V>
+bool containers::Bst<K, V>::Ceiling(containers::BinaryTreeNode<K, V>* root, const K& key, Entry<K, V>& entry) {
+	while (root) {
+		if (key > root->key) {
+			root = root->right;
+		} else if (key < root->key) {
+			if (!Ceiling(root->left, key, entry)) {
+				entry = Entry<K, V>{root->key, root->value};
+			}
+			return true;
+		} else {
+			entry = Entry<K, V>{root->key, root->value};
+			return true;
+		}
 	}
 	return false;
 }

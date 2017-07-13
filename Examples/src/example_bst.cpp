@@ -5,14 +5,21 @@
  *  Author: roncato
  */ 
 
+#include "mal/mal_cpu.h"
+#include "mal/mal_interrupt.h"
+#include "mal/mal_time.h"
+
 #include "containers/cont_bst.h"
 #include "containers/cont_linkedlist.h"
-#include "mal/mal_cpu.h"
+
+volatile mal::time::time_t diff;
 
 namespace example {
 
 void Bst(void) {
 
+	mal::irq::EnableAll();
+	mal::time::Initialize();
 	containers::Bst<char, int16_t> bst;
 
 	bst.Add('S', 6);
@@ -33,8 +40,14 @@ void Bst(void) {
 	bst.Get('R', entry);
 	bst.Get('H', entry);
 
+	bst.Floor('P', entry);
+	bst.Ceiling('P', entry);
+
 	containers::LinkedList<containers::Entry<char, int16_t>> list;
-	bst.Traverse(list);
+	auto micros1 = mal::time::Micros();
+	bst.TraverseRecursive(list);
+	diff = mal::time::Micros() - micros1;
+
 	containers::LinkedListIterator<containers::Entry<char, int16_t>> iterator(&list);
 	while (iterator.HasNext()) {
 		entry = iterator.Current();

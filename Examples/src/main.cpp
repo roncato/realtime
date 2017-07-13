@@ -27,6 +27,6 @@ int main(void) {
 	//example::Serial();
 	//example::PriorityQueue();
 	//example::SortedVector();
-	example::Bst();
+	//example::Bst();
 	return 0;
 }
