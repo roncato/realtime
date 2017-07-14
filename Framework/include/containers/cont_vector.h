@@ -39,7 +39,7 @@ public:
 	}
 	void Clear();
 	void CopyTo(const Vector<T>& from, Vector<T>& to);
-	const Vector<T>& operator=(Vector<T>& that) {
+	const Vector<T>& operator=(const Vector<T>& that) {
 		CopyTo(that, *this);
 		return *this;
 	}
@@ -62,7 +62,7 @@ bool containers::Vector<T>::EnsureCapacity() {
 	if (!store_) {
 		store_ = reinterpret_cast<T*>(malloc(capacity_*sizeof(T)));
 	} else if (size_ >= capacity_) {
-		capacity_ *= 1.5;
+		capacity_ = capacity_+capacity_;
 		auto const new_store = reinterpret_cast<T*>(malloc(capacity_*sizeof(T)));
 		if (new_store) {
 			for (uint16_t i = 0; i < size_; ++i) {
