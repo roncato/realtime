@@ -17,17 +17,7 @@ namespace containers {
 template <class K, class V, uint8_t capacity = 61>
 class HashTable {
 public:
-	bool Add(const K& key, const V& value) {
-		LinkedList<Entry<K, V>>* list = &store_[Hash(key)];
-		const auto size = list->Size();
-		if (list->AddOrReplace(key, Entry<K, V>{key, value}, KeyHit)) {
-			if (list->Size() > size) {
-				++size_;
-			}
-			return true;
-		}
-		return false;
-	}
+	bool Add(const K& key, const V& value);
 	bool Get(const K& key, containers::Entry<K, V>& entry) {
 		return store_[Hash(key)].Get(key, entry, KeyHit);
 	}
@@ -96,5 +86,17 @@ private:
 
 } // namespace containers
 
+template <class K, class V, uint8_t capacity>
+bool containers::HashTable<K, V, capacity>::Add(const K& key, const V& value) {
+	LinkedList<Entry<K, V>>* list = &store_[Hash(key)];
+	const auto size = list->Size();
+	if (list->AddOrReplace(key, Entry<K, V>{key, value}, KeyHit)) {
+		if (list->Size() > size) {
+			++size_;
+		}
+		return true;
+	}
+	return false;
+}
 
 #endif /* CONT_HASHTABLE_H_ */

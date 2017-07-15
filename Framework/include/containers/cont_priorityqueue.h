@@ -60,7 +60,7 @@ public:
 	class PriorityQueueIterator {
 	public:
 		PriorityQueueIterator(PriorityQueue* queue) : queue_{queue} {}
-		bool HasNext() {
+		 bool HasNext() {
 			return k <= queue_->n_;
 		}
 		Entry<K, V> Current() {
