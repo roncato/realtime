@@ -24,18 +24,24 @@ bool sensor::VoltsSensor::Read(float& quantity) {
 }
 
 sensor::SensorReturn sensor::VoltsSensor::Open() {
-	mal::reg::Access<uint8_t, uint8_t, mal::reg::kADControlStatusReg, mal::reg::kADCEnableBit>::SetBit();
-	mal::reg::SetBit(mal::reg::kDInputDisableReg, adc_pin_);
-	++instances;
-	is_open = true;
-	return SENSOR_RETURN_OKAY;
+	if (!is_open) {
+		mal::reg::Access<uint8_t, uint8_t, mal::reg::kADControlStatusReg, mal::reg::kADCEnableBit>::SetBit();
+		mal::reg::SetBit(mal::reg::kDInputDisableReg, adc_pin_);
+		++instances;
+		is_open = true;
+		return SENSOR_RETURN_OKAY;
+	}	
+	return SENSOR_RETURN_NOT_AFFECTED;
 };
 
 sensor::SensorReturn sensor::VoltsSensor::Close() {
-	if (--instances <= 0) {
-		mal::reg::Access<uint8_t, uint8_t, mal::reg::kADControlStatusReg, mal::reg::kADCEnableBit>::ClearBit();
-	}
-	mal::reg::ClearBit(mal::reg::kDInputDisableReg, adc_pin_);
-	is_open = false;
-	return SENSOR_RETURN_OKAY;
+	if (is_open) {
+		if (--instances <= 0) {
+			mal::reg::Access<uint8_t, uint8_t, mal::reg::kADControlStatusReg, mal::reg::kADCEnableBit>::ClearBit();
+		}
+		mal::reg::ClearBit(mal::reg::kDInputDisableReg, adc_pin_);
+		is_open = false;
+		return SENSOR_RETURN_OKAY;
+	}	
+	return SENSOR_RETURN_NOT_AFFECTED;
 }
