@@ -64,6 +64,8 @@ private:
 	bool Ceiling(BinaryTreeNode<K, V>* root, const K& key, Entry<K, V>& entry);
 };
 
+} // namespace containers
+
 template <class K, class V>
 containers::BinaryTreeNode<K, V>* containers::Bst<K, V>::NewNode(const K& key, const V& value) {
 	auto const node = reinterpret_cast<containers::BinaryTreeNode<K, V>*>(malloc(sizeof(containers::BinaryTreeNode<K, V>)));
@@ -425,7 +427,5 @@ bool containers::Bst<K, V>::Ceiling(containers::BinaryTreeNode<K, V>* root, cons
 	}
 	return false;
 }
-
-} // namespace containers
 
 #endif /* BST_H_ */

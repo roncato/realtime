@@ -6,8 +6,8 @@
  */ 
 
 
-#ifndef CONST_QUEUE_H_
-#define CONST_QUEUE_H_
+#ifndef CONT_QUEUE_H_
+#define CONT_QUEUE_H_
 
 namespace containers {
 
@@ -22,4 +22,4 @@ public:
 
 } // namespace containers
 
-#endif /* CONST_QUEUE_H_ */
+#endif /* CONT_QUEUE_H_ */

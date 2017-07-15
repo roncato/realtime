@@ -185,7 +185,13 @@
     <Compile Include="include\communication\comm_serial.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="include\containers\cont_hashtable.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="include\containers\cont_bst.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\containers\cont_map.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\containers\cont_set.h">
@@ -197,7 +203,7 @@
     <Compile Include="include\containers\containers.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\containers\cont_map.h">
+    <Compile Include="include\containers\cont_sortedmap.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\containers\cont_priorityqueue.h">

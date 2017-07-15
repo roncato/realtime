@@ -190,6 +190,9 @@
     <Compile Include="src\example_comm_serial.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\example_hashtable.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\example_priorityqueue.cpp">
       <SubType>compile</SubType>
     </Compile>

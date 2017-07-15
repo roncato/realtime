@@ -6,8 +6,8 @@
  */ 
 
 
-#ifndef CONST_SET_H_
-#define CONST_SET_H_
+#ifndef CONT_SET_H_
+#define CONT_SET_H_
 
 namespace containers {
 
@@ -24,4 +24,4 @@ public:
 } // namespace containers
 
 
-#endif /* CONST_SET_H_ */
+#endif /* CONT_SET_H_ */

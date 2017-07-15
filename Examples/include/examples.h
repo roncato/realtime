@@ -31,6 +31,7 @@ void Serial(void);
 void PriorityQueue(void);
 void SortedVector(void);
 void Bst(void);
+void HashTable(void);
 
 }
 

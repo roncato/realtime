@@ -23,7 +23,7 @@ inline void NOP() {
 }
 
 inline uint8_t ReadProgramMemory(volatile uint8_t* program_memory_ptr) {
-	return pgm_read_byte(reinterpret_cast<uint16_t>(program_memory_ptr));
+	return pgm_read_byte(reinterpret_cast<uint16_t*>(program_memory_ptr));
 }
 
 } // namespace cpu

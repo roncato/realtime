@@ -88,6 +88,8 @@ private:
 	bool EnsureCapacity();
 };
 
+} // namespace containers
+
 template <class K, class V>
 bool containers::SortedVector<K, V>::Add(const K& key, const V& value) {
 	uint16_t rank;
@@ -230,7 +232,5 @@ void containers::SortedVector<K, V>::CopyTo(const SortedVector<K, V>& from, Sort
 		}
 	}
 }
-
-} // namespace containers
 
 #endif /* CONT_SORTEDVECTOR_H_ */

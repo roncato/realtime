@@ -28,5 +28,6 @@ int main(void) {
 	//example::PriorityQueue();
 	//example::SortedVector();
 	//example::Bst();
+	example::HashTable();
 	return 0;
 }

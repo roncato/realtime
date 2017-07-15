@@ -35,18 +35,26 @@ public:
 		CopyTo(that, *this);
 	}
 	~LinkedList();
-	void Add(const T& elem);
-	void Add(uint16_t index, const T& elem);
+	bool Add(const T& elem);
+	template <class S>
+	bool AddOrReplace(const S& state, const T& elem, bool (*Predicate)(const S&, const T&));
+	bool Add(uint16_t index, const T& elem);
 	void Remove();
 	void Remove(uint16_t index);
+	template <class S>
+	bool Remove(const S& state, bool (*Predicate)(const S&, const T&));
 	bool Get(uint16_t index, T& elem);
+	template <class S>
+	bool Get(const S& state, T& elem, bool (*Predicate)(const S&, const T&));
+	template <class S>
+	bool Contains(const S& state, bool (*Predicate)(const S&, const T&));
 	uint16_t Size() const {
 		return size_;
 	}
 	bool IsEmpty() const {
 		return size_ <= 0;
 	}
-	void Enqueue(T elem);
+	bool Enqueue(const T& elem);
 	bool Dequeue(T& elem);
 	bool Peek(T& elem);
 	void Clear();
@@ -119,19 +127,23 @@ containers::LinkedList<T>::~LinkedList()
 }
 
 template <class T>
-void containers::LinkedList<T>::Add(const T& elem) {
+bool containers::LinkedList<T>::Add(const T& elem) {
 	containers::SinglyLinkedNode<T>* new_node = reinterpret_cast<containers::SinglyLinkedNode<T>*>(malloc(sizeof(containers::SinglyLinkedNode<T>)));
 	if (new_node) {
 		new_node->next = nullptr;
 		new_node->elem = elem;
 		tail_->next = new_node;
 		tail_ = new_node;
+		if (!head_.next) {
+			head_.next = new_node;
+		}
 		++size_;
 	}
+	return new_node;
 }
 
 template <class T>
-void containers::LinkedList<T>::Add(uint16_t index, const T& elem) {
+bool containers::LinkedList<T>::Add(uint16_t index, const T& elem) {
 	if (index >= 0 && index < size_) {
 		containers::SinglyLinkedNode<T>* prev = &head_;
 		containers::SinglyLinkedNode<T>* node = prev->next;
@@ -146,7 +158,21 @@ void containers::LinkedList<T>::Add(uint16_t index, const T& elem) {
 			prev->next = new_node;
 			++size_;
 		}
+		return new_node;
 	}
+	return false;
+}
+
+template <class T>
+template <class S>
+bool containers::LinkedList<T>::AddOrReplace(const S& state, const T& elem, bool (*Predicate)(const S&, const T&)) {
+	for (containers::SinglyLinkedNode<T>* node = head_.next; node; node = node->next) {
+		if (Predicate(state, node->elem)) {
+			node->elem = elem;
+			return true;
+		}
+	}
+	return Add(elem);
 }
 
 template <class T>
@@ -186,6 +212,29 @@ void containers::LinkedList<T>::Remove(uint16_t index) {
 }
 
 template <class T>
+template <class S>
+bool containers::LinkedList<T>::Remove(const S& state, bool (*Predicate)(const S&, const T&)) {
+	containers::SinglyLinkedNode<T>* prev = &head_;
+	containers::SinglyLinkedNode<T>* node = prev->next;
+	uint16_t index{};
+	while (node) {
+		if (Predicate(state, node->elem)) {
+			containers::SinglyLinkedNode<T>* remove_node = node;
+			prev->next = node->next;
+			free(remove_node);
+			if (index == size_ - 1) {
+				tail_ = prev;
+			}
+			--size_;
+			return true;
+		}
+		++index;
+		node = node->next;
+	}
+	return false;
+}
+
+template <class T>
 void containers::LinkedList<T>::Remove(containers::SinglyLinkedNode<T>* prev, containers::SinglyLinkedNode<T>* node) {
 	containers::SinglyLinkedNode<T>* remove_node = node;
 	prev->next = node->next;
@@ -214,7 +263,31 @@ bool containers::LinkedList<T>::Get(uint16_t index, T& elem) {
 }
 
 template <class T>
-void containers::LinkedList<T>::Enqueue(T elem) {
+template <class S>
+bool containers::LinkedList<T>::Get(const S& state, T& elem, bool (*Predicate)(const S&, const T&)) {
+	for (containers::SinglyLinkedNode<T>* node = head_.next; node; node = node->next) {
+		if (Predicate(state, node->elem)) {
+			elem = node->elem;
+			return true;
+		}
+	}
+	return false;
+}
+
+template <class T>
+template <class S>
+bool containers::LinkedList<T>::Contains(const S& state, bool (*Predicate)(const S&, const T&)) {
+	containers::SinglyLinkedNode<T>* node = head_.next;
+	while (node) {
+		if (Predicate(state, node->elem)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+template <class T>
+bool containers::LinkedList<T>::Enqueue(const T& elem) {
 	return Add(elem);
 }
 
