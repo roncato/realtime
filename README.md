@@ -1,2 +1,2 @@
 # Realtime
-AVR runtime library
+AVR microcontrollers runtime library
